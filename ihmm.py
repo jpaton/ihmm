@@ -25,13 +25,11 @@ class StateFactory(object):
         self.gamma_e = gamma_e
         self.next_id = 0
 
-    def get_state(self, *args, **kwargs):
+    def get_state(self):
         ret = StateFactory.State(self.alpha,
                                   self.beta_e,
                                   self.gamma_e,
-                                  self.next_id,
-                                  *args,
-                                  **kwargs)
+                                  self.next_id)
         self.next_id += 1
         return ret
 
@@ -245,7 +243,7 @@ class SequenceFactory(object):
         return state_sequence, emissions
 
 def main():
-    state_factory = StateFactory(1, 5, 5, 5, 5)
+    state_factory = StateFactory(10, 5, 5, 1, 5)
     sequence_factory = SequenceFactory(state_factory)
     print '\n'.join(map(str, sequence_factory.create_sequence(800)))
 
