@@ -1,8 +1,13 @@
 from collections import defaultdict
+import math
 
 __author__ = 'jpaton'
 
 class HMM(defaultdict):
+    """
+    An HMM is a two-dimensional dictionary mapping ordered pairs of States
+    to transition probabilities.
+    """
     def __init__(self):
         # self.trans: transmission counts
         super(HMM, self).__init__(lambda: defaultdict(0))
@@ -10,31 +15,9 @@ class HMM(defaultdict):
         self._transition_count = None
         self._emission_count = None
 
-    def __str__(self):
+    def __repr__(self):
         for state in self.keys():
             print ',\t'.join([count for count in self[state].values()])
-
-    @property
-    def total_transmissions(self):
-        if self._transition_count == None:
-            # recompute transition count
-            self._transition_count = 0
-            for state_i in self:
-                for state_j in self:
-                    if state_i == state_j:
-                        continue
-                    self._transition_count += self[state_i][state_j]
-        return self._transition_count
-
-    @property
-    def total_emissions(self):
-        if self._emission_count == None:
-            # recompute emission count
-            self._emission_count = 0
-            for state in self:
-                for symbol, count in state.iteritems():
-                    self._emission_count += count
-        return self._emission_count
 
     def logprob_states(self, states):
         """
